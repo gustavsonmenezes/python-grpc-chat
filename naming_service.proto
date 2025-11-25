@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package naming_service;
+
+service NamingService {
+  rpc RegisterServer(RegisterRequest) returns (RegisterResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc LookupServer(LookupRequest) returns (LookupResponse);
+  rpc ListServers(ListServersRequest) returns (ListServersResponse);
+}
+
+message RegisterRequest {
+  string server_id = 1;
+  string address = 2;
+  bool is_primary = 3;
+}
+
+message RegisterResponse {
+  bool success = 1;
+}
+
+message HeartbeatRequest {
+  string server_id = 1;
+}
+
+message HeartbeatResponse {
+  bool success = 1;
+}
+
+message LookupRequest {
+  // Empty request
+}
+
+message LookupResponse {
+  string server_id = 1;
+  string address = 2;
+  bool success = 3;
+}
+
+message ListServersRequest {
+  // Empty request
+}
+
+message ListServersResponse {
+  repeated ServerInfo servers = 1;
+}
+
+message ServerInfo {
+  string server_id = 1;
+  string address = 2;
+  bool is_primary = 3;
+  string status = 4;
+  string last_heartbeat = 5;
+}

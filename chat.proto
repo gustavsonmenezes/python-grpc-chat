@@ -2,19 +2,59 @@ syntax = "proto3";
 
 package chat;
 
-service SimpleChat {
-  rpc SendMessage (ChatMessage) returns (ChatResponse);
-  rpc ReceiveMessages (Empty) returns (stream ChatMessage);
+service ChatService {
+  rpc Connect(ConnectRequest) returns (ConnectResponse);
+  rpc SendMessage(MessageRequest) returns (MessageResponse);
+  rpc GetMessages(GetMessagesRequest) returns (stream ChatMessage);
+  rpc ListUsers(ListUsersRequest) returns (UserList);
+  rpc Disconnect(DisconnectRequest) returns (DisconnectResponse);
 }
 
-message ChatMessage {
-  string user = 1;
+message ConnectRequest {
+  string username = 1;
+}
+
+message ConnectResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message MessageRequest {
+  string username = 1;
   string text = 2;
 }
 
-message ChatResponse {
+message MessageResponse {
   bool success = 1;
-  string status = 2;
+  string message = 2;
 }
 
-message Empty {}
+message GetMessagesRequest {
+  string username = 1;
+}
+
+message ChatMessage {
+  string username = 1;
+  string text = 2;
+  string timestamp = 3;
+  bool success = 4;
+  string message = 5;
+}
+
+message ListUsersRequest {
+  // Empty request
+}
+
+message UserList {
+  repeated string users = 1;
+  bool success = 2;
+}
+
+message DisconnectRequest {
+  string username = 1;
+}
+
+message DisconnectResponse {
+  bool success = 1;
+  string message = 2;
+}
